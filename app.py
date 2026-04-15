@@ -9,7 +9,13 @@ MODEL_PATH = "hybrid_model.h5"
 
 if not os.path.exists(MODEL_PATH):
     url = "https://huggingface.co/Sahil200217/pneumonia-detection-model/resolve/main/hybrid_model.h5"
-    gdown.download(url, MODEL_PATH, quiet=False)
+    import requests
+
+if not os.path.exists(MODEL_PATH):
+    url = "https://huggingface.co/Sahil200217/pneumonia-detection-model/resolve/main/hybrid_model.h5"
+    r = requests.get(url)
+    with open(MODEL_PATH, "wb") as f:
+        f.write(r.content)
 # ─── Page Config ────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="PneumoScan AI",
