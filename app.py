@@ -3,19 +3,17 @@ from PIL import Image
 import numpy as np
 from tensorflow.keras.models import load_model
 import gdown
+import requests
 import os
 
 MODEL_PATH = "hybrid_model.h5"
 
 if not os.path.exists(MODEL_PATH):
     url = "https://huggingface.co/Sahil200217/pneumonia-detection-model/resolve/main/hybrid_model.h5"
-    import requests
-
-if not os.path.exists(MODEL_PATH):
-    url = "https://huggingface.co/Sahil200217/pneumonia-detection-model/resolve/main/hybrid_model.h5"
-    r = requests.get(url)
-    with open(MODEL_PATH, "wb") as f:
-        f.write(r.content)
+    with requests.get(url, stream=True) as r:
+        with open(MODEL_PATH, "wb") as f:
+            for chunk in r.iter_content(chunk_size=8192):
+                f.write(chunk)
 # ─── Page Config ────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="PneumoScan AI",
